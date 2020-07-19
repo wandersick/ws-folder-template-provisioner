@@ -51,7 +51,7 @@ The script has been designed with care to improve usability and avoid accidental
 │ FolderTemplateProvisioner.bat // main script
 │ _elevate.vbs // UAC elevation script (optional)
 │
-├───ZZ IT_do not Use\01 Template Folder // Template folder (this can be a sub-folder)
+├───ZZ IT_do not use\01 Template Folder // Template folder (this can be a sub-folder)
 │                                       // with folders/files of set permissions to copy
 │
 ├───A // Last names beginning with an "A"
@@ -72,7 +72,7 @@ The script has been designed with care to improve usability and avoid accidental
 
 ## Steps by Step - How to Set up the Scripts
 
-1. Edit `templateName` variable at the upper area of `FolderTemplateProvisioner.bat` script by setting it to the folder acting as the template, e.g. `ZZ IT_do not Use\01 Template Folder`, with required files and permissions prepared inside
+1. Edit `templateName` variable at the upper area of `FolderTemplateProvisioner.bat` script by setting it to the folder acting as the template, e.g. `ZZ IT_do not use\01 Template Folder`, with required files and permissions prepared inside
 2. Place both scripts (`FolderTemplateProvisioner.bat` and optionally `_elevate.vbs`) inside a folder containing `A,B,C...Z` sub-folders, sitting beside them. The `A-Z` folders contains the template folder and provisioned folders named '`LASTNAME, Firstname`' copied by the script from the template folder
 
 ## Step by Step - How to Provision a New Folder

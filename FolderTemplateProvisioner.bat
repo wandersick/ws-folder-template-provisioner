@@ -26,7 +26,7 @@
 :: Setting up the Scripts:
 ::   1. Edit `templateName` variable at the upper area of 'FolderTemplateProvisioner.bat' script
 ::      by setting it to the folder acting as the template, e.g.
-::      'ZZ IT_do not Use\01 Template Folder', with required files and permissions inside
+::      'ZZ IT_do not use\01 Template Folder', with required files and permissions inside
 ::   2. Place both scripts ('FolderTemplateProvisioner.bat' and optionally '_elevate.vbs') inside
 ::      a folder containing 'A,B,C...Z' sub-folders, sitting beside them. The 'A-Z' folders contains
 ::      the template folder and provisioned folders named 'LASTNAME, Firstname' copied by the script
@@ -47,7 +47,7 @@
 setlocal enabledelayedexpansion
 
 :: Define your template folder name here (without quotes)
-set templateName=ZZ IT_do not Use\01 Template Folder
+set templateName=ZZ IT_do not use\01 Template Folder
 
 :: Set the working directory where script is located by %~d0%~p0 (e.g. x:\...\here)
 set WorkingDir=%~d0%~p0
