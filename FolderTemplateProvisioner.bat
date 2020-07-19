@@ -1,6 +1,7 @@
 :: Name: ws-folder-template-provisioner
-:: Version: 1.0
-:: Date: 20200714
+:: Version: 1.1
+:: Date: 20200719
+:: GitHub Repository: https://github.com/wandersick/ws-folder-template-provisioner
 :: Description:
 ::   This Windows batch script provisions (copies) new folders with exact permissions and content
 ::   from a specified existing folder (template) based on the information (first name & last name)
@@ -25,7 +26,7 @@
 :: Setting up the Scripts:
 ::   1. Edit `templateName` variable at the upper area of 'FolderTemplateProvisioner.bat' script
 ::      by setting it to the folder acting as the template, e.g.
-::      '01 TEMPLATE Folder - Copy for New  Starter', with required files and permissions inside
+::      'ZZ IT_do not Use\01 Template Folder', with required files and permissions inside
 ::   2. Place both scripts ('FolderTemplateProvisioner.bat' and optionally '_elevate.vbs') inside
 ::      a folder containing 'A,B,C...Z' sub-folders, sitting beside them. The 'A-Z' folders contains
 ::      the template folder and provisioned folders named 'LASTNAME, Firstname' copied by the script
@@ -46,7 +47,7 @@
 setlocal enabledelayedexpansion
 
 :: Define your template folder name here (without quotes)
-set templateName=01 TEMPLATE Folder - Copy for New  Starter
+set templateName=ZZ IT_do not Use\01 Template Folder
 
 :: Set the working directory where script is located by %~d0%~p0 (e.g. x:\...\here)
 set WorkingDir=%~d0%~p0
@@ -126,7 +127,7 @@ cls
 echo.
 set /p lastName=:: Please input last name ^(in capital case, e.g. DOWNEY^): 
 echo.
-set /p firstName=:: Please input first name ^(in camel case, e.g. Robert^): 
+set /p firstName=:: Please input first name ^(in title case, e.g. Robert^): 
 
 :: Review folder name
 :reviewFolderName
@@ -180,6 +181,21 @@ set lastName1st=
 REM Grab first letter from last name
 set lastName1st=%lastName:~0,1%
 
+dir "%templateName%">nul 2>&1
+if %errorlevel% NEQ 0 (
+  echo.
+  echo ___________________________________________________________________
+  echo.
+  echo :: Error: Template folder name "%templateName%" does not exist in target location
+  echo.
+  echo    Or it is defined wrongly in the script
+  echo.
+  endlocal
+  echo Press any key to quit . . .
+  pause >nul
+  goto :EOF
+)
+
 REM Enter the responsible single-letter folder
 pushd %lastName1st%>nul 2>&1
 if %errorlevel% NEQ 0 (
@@ -191,24 +207,11 @@ if %errorlevel% NEQ 0 (
   popd
   pause
   goto :enterName
-)
-
-if not exist "%templateName%" (
-  echo.
-  echo ___________________________________________________________________
-  echo.
-  echo :: Error: Template folder name "%templateName%" does not exist in target location
-  echo.
-  echo    Or it is defined wrongly in the script
-  echo.
+) else (
   popd
-  endlocal
-  echo Press any key to quit . . .
-  pause >nul
-  goto :EOF
 )
 
-if exist "%folderName%" (
+if exist "%lastName1st%\%folderName%" (
   echo.
   echo ___________________________________________________________________
   echo.
@@ -217,12 +220,12 @@ if exist "%folderName%" (
     echo.
     echo    Please confirm it is unneeded . . . Opening the folder . . . 
     ping 127.0.0.1 -n 2 >nul 2>&1
-    explorer "%folderName%"
+    explorer "%lastName1st%\%folderName%"
     set folderOpened=1
   )
   echo.
   set /p goAhead= :: Are you sure to DELETE it and replace it with a new one? ^(Answer 'N' to quit if unsure^) [Y,N] 
-  popd
+ 
   if /i "!goAhead!" EQU "N" (
     goto :enterName
   ) else if /i "!goAhead!" EQU "Y" (
@@ -235,8 +238,7 @@ if exist "%folderName%" (
 :: Create folder
 :createFolder
 
-REM Enter the responsible single-letter folder
-pushd %lastName1st%>nul 2>&1
+
 echo.
 echo ___________________________________________________________________
 echo.
@@ -246,7 +248,7 @@ ping 127.0.0.1 -n 2 >nul 2>&1
 
 REM Copy template folder as a new folder
 set robocopyError=
-robocopy "%templateName%" "%folderName%" /MIR /COPYALL /TEE /LOG+:%Temp%\FolderCreator.log
+robocopy "%templateName%" "%lastName1st%\%folderName%" /MIR /COPYALL /TEE /LOG+:%Temp%\FolderCreator.log
 if %errorlevel% GTR 3 set robocopyError=%errorlevel%
 
 :: Folder created
@@ -262,7 +264,7 @@ set /p goAhead= :: Open the new folder now? [Y,N]
 if /i "%goAhead%" EQU "N" (
   goto :end
 ) else if /i "%goAhead%" EQU "Y" (
-  explorer "%folderName%"
+  explorer "%lastName1st%\%folderName%"
   goto :end
 ) else (
   goto :folderCreated
@@ -270,7 +272,6 @@ if /i "%goAhead%" EQU "N" (
 
 :: End
 :end
-popd
 endlocal
 cls
 echo.

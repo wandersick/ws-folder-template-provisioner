@@ -51,9 +51,10 @@ The script has been designed with care to improve usability and avoid accidental
 │ FolderTemplateProvisioner.bat // main script
 │ _elevate.vbs // UAC elevation script (optional)
 │
-├───A
-│   ├───Template Folder // By default: '01 TEMPLATE Folder - Copy for New  Starter'
-│   │                   // containing folders/files of specific permissions to copy
+├───ZZ IT_do not Use\01 Template Folder // Template folder (this can be a sub-folder)
+│                                       // with folders/files of set permissions to copy
+│
+├───A // Last names beginning with an "A"
 │   │───LASTNAME, Firstname 1
 │   │───LASTNAME, Firstname 2
 │   │                       .  // Each copied folder is named in this way according
@@ -71,7 +72,7 @@ The script has been designed with care to improve usability and avoid accidental
 
 ## Steps by Step - How to Set up the Scripts
 
-1. Edit `templateName` variable at the upper area of `FolderTemplateProvisioner.bat` script by setting it to the folder acting as the template, e.g. `01 TEMPLATE Folder - Copy for New  Starter`, with required files and permissions inside
+1. Edit `templateName` variable at the upper area of `FolderTemplateProvisioner.bat` script by setting it to the folder acting as the template, e.g. `ZZ IT_do not Use\01 Template Folder`, with required files and permissions prepared inside
 2. Place both scripts (`FolderTemplateProvisioner.bat` and optionally `_elevate.vbs`) inside a folder containing `A,B,C...Z` sub-folders, sitting beside them. The `A-Z` folders contains the template folder and provisioned folders named '`LASTNAME, Firstname`' copied by the script from the template folder
 
 ## Step by Step - How to Provision a New Folder
@@ -137,3 +138,10 @@ E. No admin rights are detected, while UAC is off and/or the optional `_elevate.
 F. Robocopy error ends with a return code presented to user
 
 ![Error - Robocopy error ends with a return code presented to user](_images/e06-robocopy-error-with-return-code.png)
+
+## Release History
+
+| Ver | Date | Changes |
+| --- | --- | --- |
+| 1.1 | 20200719 | Folder template consolidated as single folder instead of multiple ones within sub-folders |
+| 1.0 | 20200714 | [First release](https://github.com/wandersick/ws-folder-template-provisioner/tree/6b0c9aad5375afc5dfa0ef687daeeced399d642b) where template folders are located in each sub-folders |
